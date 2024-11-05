@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "HawqsApiExamples": {
+      "commandName": "Project",
+      "commandLineArgs": "--create-and-run-steps"
+    }
+  }
+}
