@@ -40,6 +40,9 @@ switch (command)
 	case CreateProject.CommandName:
 		await new CreateProject().RunAsync(args, appSettings);
 		break;
+	case CreateDefaultScenarioAndRun.CommandName:
+		await new CreateDefaultScenarioAndRun().RunAsync(args, appSettings);
+		break;
 	default:
 		Console.WriteLine("Unrecognized command flag.");
 		break;

@@ -26,25 +26,23 @@ public class CreateProject : ICommandAction
 			{
 				method = "area",
 				target = 1,
-				units = "km2",
-				exemptLanduse = new List<string> { "AGWF", "AGWR", "AGWT", "RIWF", "RIWN", "UPWF", "UPWN", "WATR", "WETF", "WETL", "WETN" },
-				noAreaRedistribution = new List<string> { "AGWF", "AGWR", "AGWT", "RIWF", "RIWN", "UPWF", "UPWN", "WATR", "WETF", "WETL", "WETN" }
+				units = "km2"
 			}
 		};
 
 		using var client = new HttpClient();
-		var createProjectPostMessage = new HttpRequestMessage(HttpMethod.Post, $"{appSettings.BaseUrl}/builder/project/create-only");
-		createProjectPostMessage.Headers.Add("X-API-Key", appSettings.ApiKey);
-		createProjectPostMessage.Content = new StringContent(JsonConvert.SerializeObject(projectRequestData), Encoding.UTF8, "application/json");
-		var createProjectPostResult = await client.SendAsync(createProjectPostMessage);
+		var postMessage = new HttpRequestMessage(HttpMethod.Post, $"{appSettings.BaseUrl}/builder/project/create-only");
+		postMessage.Headers.Add("X-API-Key", appSettings.ApiKey);
+		postMessage.Content = new StringContent(JsonConvert.SerializeObject(projectRequestData), Encoding.UTF8, "application/json");
+		var postResult = await client.SendAsync(postMessage);
 
-		if (!createProjectPostResult.IsSuccessStatusCode)
+		if (!postResult.IsSuccessStatusCode)
 		{
-			Console.WriteLine($"Error sending project creation API request: {createProjectPostResult.StatusCode}, {createProjectPostResult.ReasonPhrase}");
+			Console.WriteLine($"Error sending project creation API request: {postResult.StatusCode}, {postResult.ReasonPhrase}");
 			return 1;
 		}
 
-		var submissionStr = await createProjectPostResult.Content.ReadAsStringAsync();
+		var submissionStr = await postResult.Content.ReadAsStringAsync();
 		var submissionResult = JsonConvert.DeserializeObject<Dictionary<string, dynamic>>(submissionStr);
 		if (submissionResult == null || !submissionResult.ContainsKey("url"))
 		{
