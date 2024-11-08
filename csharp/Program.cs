@@ -43,6 +43,15 @@ switch (command)
 	case CreateDefaultScenarioAndRun.CommandName:
 		await new CreateDefaultScenarioAndRun().RunAsync(args, appSettings);
 		break;
+	case CreatePointSourceScenarioAndRun.CommandName:
+		await new CreatePointSourceScenarioAndRun().RunAsync(args, appSettings);
+		break;
+	case CreateIclusScenarioAndRun.CommandName:
+		await new CreateIclusScenarioAndRun().RunAsync(args, appSettings);
+		break;
+	case CreateCustomLupScenarioAndRun.CommandName:
+		await new CreateCustomLupScenarioAndRun().RunAsync(args, appSettings);
+		break;
 	default:
 		Console.WriteLine("Unrecognized command flag.");
 		break;

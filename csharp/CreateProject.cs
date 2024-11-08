@@ -10,6 +10,7 @@ namespace HawqsApiExamples;
 /// Poll results of project creation every 10 seconds until progress is 100%
 /// Save project files to a directory - no scenario has been added or run yet, so these are watershed files such as subbasins, HRUs, and point source samples.
 /// </summary>
+/// <param name="args">The command line arguments should include the command name.</param>
 public class CreateProject : ICommandAction
 {
 	public const string CommandName = "--create-project";
@@ -30,6 +31,7 @@ public class CreateProject : ICommandAction
 			}
 		};
 
+		//Submit the request to the API
 		using var client = new HttpClient();
 		var postMessage = new HttpRequestMessage(HttpMethod.Post, $"{appSettings.BaseUrl}/builder/project/create-only");
 		postMessage.Headers.Add("X-API-Key", appSettings.ApiKey);
@@ -42,6 +44,7 @@ public class CreateProject : ICommandAction
 			return 1;
 		}
 
+		//Read the response and get the project request ID and URL
 		var submissionStr = await postResult.Content.ReadAsStringAsync();
 		var submissionResult = JsonConvert.DeserializeObject<Dictionary<string, dynamic>>(submissionStr);
 		if (submissionResult == null || !submissionResult.ContainsKey("url"))
@@ -53,6 +56,7 @@ public class CreateProject : ICommandAction
 		int projectRequestId = (int)submissionResult["id"];
 		Console.WriteLine($"Project request ID {projectRequestId} submitted");
 
+		//Check the status of the project creation until it's complete
 		var timer = new PeriodicTimer(pollInterval);
 		ApiProjectResult project = await ApiHelpers.GetProjectStatus(client, submissionResult["url"], appSettings.ApiKey);
 
@@ -71,6 +75,7 @@ public class CreateProject : ICommandAction
 			}
 		}
 
+		//Save project files to disk; will include HRUs CSV, subbasins CSV and watershed files (including point source samples)
 		var savePath = Path.Combine(appSettings.SavePath, $"Project_{projectRequestId}");
 		if (!Directory.Exists(savePath)) Directory.CreateDirectory(savePath);
 

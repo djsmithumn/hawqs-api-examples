@@ -7,6 +7,7 @@ namespace HawqsApiExamples;
 /// <summary>
 /// Create a default scenario attached to the supplied project request ID and run it.
 /// </summary>
+/// <param name="args">The command line arguments should include the command name followed by project request ID.</param>
 public class CreateDefaultScenarioAndRun : ICommandAction
 {
 	public const string CommandName = "--create-default-scenario-and-run";
@@ -29,6 +30,7 @@ public class CreateDefaultScenarioAndRun : ICommandAction
 			endingSimulationDate = "1989-12-31",
 			warmupYears = 2,
 			outputPrintSetting = "daily",
+			writeSwatEditorDb = true,
 			reportData = new
 			{
 				formats = new List<string> { "csv", "netcdf" },
@@ -43,6 +45,7 @@ public class CreateDefaultScenarioAndRun : ICommandAction
 			}
 		};
 
+		//Submit the scenario request to the API
 		using var client = new HttpClient();
 		var postMessage = new HttpRequestMessage(HttpMethod.Post, $"{appSettings.BaseUrl}/builder/scenario/create-and-run");
 		postMessage.Headers.Add("X-API-Key", appSettings.ApiKey);
@@ -55,6 +58,7 @@ public class CreateDefaultScenarioAndRun : ICommandAction
 			return 1;
 		}
 
+		//Read the response and get the scenario request ID and URL
 		var submissionStr = await postResult.Content.ReadAsStringAsync();
 		var submissionResult = JsonConvert.DeserializeObject<Dictionary<string, dynamic>>(submissionStr);
 		if (submissionResult == null || !submissionResult.ContainsKey("url"))
@@ -66,6 +70,7 @@ public class CreateDefaultScenarioAndRun : ICommandAction
 		int scenarioRequestId = (int)submissionResult["id"];
 		Console.WriteLine($"Scenario request ID {scenarioRequestId} submitted");
 
+		//Check the status of the scenario until it's complete
 		var timer = new PeriodicTimer(pollInterval);
 		ApiScenarioResult scenario = await ApiHelpers.GetScenarioStatus(client, submissionResult["url"], appSettings.ApiKey);
 
@@ -84,6 +89,7 @@ public class CreateDefaultScenarioAndRun : ICommandAction
 			}
 		}
 
+		//Save scenario output files to disk
 		var savePath = Path.Combine(appSettings.SavePath, $"Scenario_{scenarioRequestId}");
 		if (!Directory.Exists(savePath)) Directory.CreateDirectory(savePath);
 

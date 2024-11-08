@@ -2,7 +2,7 @@
   "profiles": {
     "HawqsApiExamples": {
       "commandName": "Project",
-      "commandLineArgs": "--create-and-run-steps"
+      "commandLineArgs": "--create-point-source-scenario-and-run 268 \"D:\\Repos\\hawqs-api-examples\\sample-files\\huc8-07100009-point-source-upload-example.zip\""
     }
   }
 }
