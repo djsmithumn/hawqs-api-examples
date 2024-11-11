@@ -5,7 +5,6 @@ using Microsoft.Extensions.Configuration;
 /// <summary>
 /// The purpose of this example is to demonstrate how to use the HAWQS API project builder.
 /// You may create a project, add scenarios, add point source or land use update to the scenarios, run the scenarios, and zip the project.
-/// You may also use a single API endpoint to create a project with one or more scenarios and run them all in one go. With this option you cannot add point source or land use updates, and the zip project must be done separately.
 /// 
 /// This sample project is a console application that uses command line arguments to run the different API endpoints.
 /// You will need an API key to run the examples.
@@ -51,6 +50,9 @@ switch (command)
 		break;
 	case CreateCustomLupScenarioAndRun.CommandName:
 		await new CreateCustomLupScenarioAndRun().RunAsync(args, appSettings);
+		break;
+	case ZipProject.CommandName:
+		await new ZipProject().RunAsync(args, appSettings);
 		break;
 	default:
 		Console.WriteLine("Unrecognized command flag.");

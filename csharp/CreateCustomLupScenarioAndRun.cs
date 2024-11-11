@@ -14,11 +14,11 @@ namespace HawqsApiExamples;
 /// </summary>
 /// <param name="args">The command line arguments should include the command name followed by project request ID and the full path to land use update zip file.</param>
 /// <remarks>
-/// E.g. dotnet run -- --create-custom-lup-scenario-and-run 1234 C:\path\to\lup.zip
+/// E.g. dotnet run -- create-custom-lup-scenario-and-run 1234 C:\path\to\lup.zip
 /// </remarks>
 public class CreateCustomLupScenarioAndRun : ICommandAction
 {
-	public const string CommandName = "--create-custom-lup-scenario-and-run";
+	public const string CommandName = "create-custom-lup-scenario-and-run";
 
 	public async Task<int> RunAsync(string[] args, AppSettings appSettings)
 	{
@@ -46,7 +46,7 @@ public class CreateCustomLupScenarioAndRun : ICommandAction
 			endingSimulationDate = "1989-12-31",
 			warmupYears = 2,
 			outputPrintSetting = "daily",
-			writeSwatEditorDb = true,
+			writeSwatEditorDb = "access",
 			reportData = new
 			{
 				formats = new List<string> { "csv", "netcdf" },

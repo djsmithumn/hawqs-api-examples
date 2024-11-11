@@ -10,7 +10,7 @@ namespace HawqsApiExamples;
 /// <param name="args">The command line arguments should include the command name followed by project request ID.</param>
 public class CreateDefaultScenarioAndRun : ICommandAction
 {
-	public const string CommandName = "--create-default-scenario-and-run";
+	public const string CommandName = "create-default-scenario-and-run";
 
 	public async Task<int> RunAsync(string[] args, AppSettings appSettings)
 	{
@@ -30,7 +30,7 @@ public class CreateDefaultScenarioAndRun : ICommandAction
 			endingSimulationDate = "1989-12-31",
 			warmupYears = 2,
 			outputPrintSetting = "daily",
-			writeSwatEditorDb = true,
+			writeSwatEditorDb = "access",
 			reportData = new
 			{
 				formats = new List<string> { "csv", "netcdf" },

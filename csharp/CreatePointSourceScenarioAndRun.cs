@@ -17,11 +17,11 @@ namespace HawqsApiExamples;
 /// </summary>
 /// <param name="args">The command line arguments should include the command name followed by project request ID and the full path to point source zip file.</param>
 /// <remarks>
-/// E.g. dotnet run -- --create-point-source-scenario-and-run 1234 C:\path\to\point-source.zip
+/// E.g. dotnet run -- create-point-source-scenario-and-run 1234 C:\path\to\point-source.zip
 /// </remarks>
 public class CreatePointSourceScenarioAndRun : ICommandAction
 {
-	public const string CommandName = "--create-point-source-scenario-and-run";
+	public const string CommandName = "create-point-source-scenario-and-run";
 
 	public async Task<int> RunAsync(string[] args, AppSettings appSettings)
 	{
@@ -49,7 +49,7 @@ public class CreatePointSourceScenarioAndRun : ICommandAction
 			endingSimulationDate = "1989-12-31",
 			warmupYears = 2,
 			outputPrintSetting = "daily",
-			writeSwatEditorDb = true,
+			writeSwatEditorDb = "access",
 			reportData = new
 			{
 				formats = new List<string> { "csv", "netcdf" },

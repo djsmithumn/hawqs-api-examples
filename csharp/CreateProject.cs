@@ -13,7 +13,7 @@ namespace HawqsApiExamples;
 /// <param name="args">The command line arguments should include the command name.</param>
 public class CreateProject : ICommandAction
 {
-	public const string CommandName = "--create-project";
+	public const string CommandName = "create-project";
 
 	public async Task<int> RunAsync(string[] args, AppSettings appSettings)
 	{
