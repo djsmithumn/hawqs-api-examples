@@ -231,3 +231,5 @@ _Pvt_Extensions
 # FAKE - F# Make
 .fake/
 csharp/Properties/launchSettings.json
+
+__pycache__
