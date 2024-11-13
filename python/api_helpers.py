@@ -7,7 +7,7 @@ def getAppsettings():
 	appSettings = json.load(open('appsettings.json'))
 
 	apiUrl = appSettings['AppSettings']['BaseUrl']
-	connection = http.client.HTTPConnection(apiUrl.replace('http://', ''))
+	connection = http.client.HTTPSConnection(apiUrl.replace('https://', ''))
 	apiKey = appSettings['AppSettings']['ApiKey']
 	savePath = appSettings['AppSettings']['SavePath']
 
