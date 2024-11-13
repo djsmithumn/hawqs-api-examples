@@ -1,7 +1,9 @@
-# Create a default scenario attached to the supplied project request ID and run it.
-# Provide project request ID as a command line argument.
+# Create an ICLUS scenario attached to the supplied project request ID and run it.
+# This is not much different than creating a default scenario, but the inputs must match the ICLUS requirements:
+# First verify the project HRU settings match what is needed for ICLUS.
+# Then set your scenario request to use CMIP weather data and set useIclus to true.
 #
-# python create_default_scenario_and_run.py <project_request_id>
+# python create_iclus_scenario_and_run.py <project_request_id>
 #
 
 import json
@@ -15,12 +17,29 @@ connection, headers, savePath, apiUrl = api_helpers.getAppsettings()
 
 #Define how frequently to check the project's creation status (seconds)
 pollInterval = 10 
+projectRequestId = int(sys.argv[1])
+
+#First check that the project HRU settings match what is needed for ICLUS
+connection.request('GET', '/builder/project/{}'.format(projectRequestId), None, headers)
+projectResponse = connection.getresponse()
+projectData = json.loads(projectResponse.read().decode())
+
+if projectData is None or projectData['status'] is None or not projectData['status']['isCreated']:
+	print ('Project is not finished creating yet.')
+	sys.exit()
+
+if not projectData['status']['areHruSettingsCorrectForIclus']:
+	print ('Project HRU settings do not match ICLUS requirements.')
+	sys.exit()
 
 inputData = {
-	'projectRequestId': int(sys.argv[1]),
-	'weatherDataset': 'PRISM',
-    'startingSimulationDate': '1981-01-01',
-    'endingSimulationDate': '1989-12-31',
+	'projectRequestId': projectRequestId,
+	'scenarioName': 'iclus-scenario',
+	'weatherDataset': 'GISS-E2-R',
+	'climateScenario': 'RCP45',
+	'useIclus': True,
+    'startingSimulationDate': '2030-01-01',
+    'endingSimulationDate': '2040-12-31',
     'warmupYears': 2,
     'outputPrintSetting': 'daily',
 	'writeSwatEditorDb': 'access',

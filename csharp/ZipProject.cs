@@ -34,7 +34,7 @@ public class ZipProject : ICommandAction
 			return 1;
 		}
 
-		//Check the status of the scenario until it's complete
+		//Check the status of the project zipping until it's complete
 		var timer = new PeriodicTimer(pollInterval);
 		ApiScenarioResult scenario = await ApiHelpers.GetScenarioStatus(client, $"{appSettings.BaseUrl}/builder/project/{projectRequestId}", appSettings.ApiKey);
 
@@ -53,7 +53,7 @@ public class ZipProject : ICommandAction
 			}
 		}
 
-		//Save scenario output files to disk
+		//Save project files to disk
 		var savePath = Path.Combine(appSettings.SavePath, $"ProjectZip_{projectRequestId}");
 		if (!Directory.Exists(savePath)) Directory.CreateDirectory(savePath);
 

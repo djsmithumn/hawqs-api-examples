@@ -13,7 +13,7 @@ from time import time, sleep
 import api_helpers
 
 #Get app settings
-connection, headers, savePath = api_helpers.get_appsettings()
+connection, headers, savePath, apiUrl = api_helpers.getAppsettings()
 
 #Define how frequently to check the project's creation status (seconds)
 pollInterval = 10 
@@ -48,6 +48,7 @@ error = project['status']['errorStackTrace']
 if error is not None:
 	print('Error stack trace: {}'.format(error))
 
+#Save project files to disk; will include HRUs CSV, subbasins CSV and watershed files (including point source samples)
 requestPath = os.path.join(savePath, 'Project_{}'.format(submissionResult['id']))
 os.makedirs(requestPath, exist_ok=True)
 for file in project['output']:

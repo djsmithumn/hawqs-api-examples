@@ -3,16 +3,17 @@ import json
 
 #Read in app settings from a file
 #This is a simple way to store your API key, base URL, and path to save output files on your computer
-def get_appsettings():
+def getAppsettings():
 	appSettings = json.load(open('appsettings.json'))
 
-	connection = http.client.HTTPSConnection(appSettings['AppSettings']['BaseUrl'].replace('https://', ''))
+	apiUrl = appSettings['AppSettings']['BaseUrl']
+	connection = http.client.HTTPConnection(apiUrl.replace('http://', ''))
 	apiKey = appSettings['AppSettings']['ApiKey']
 	savePath = appSettings['AppSettings']['SavePath']
 
-	headers = { 'X-API-Key': apiKey, 'Content-type': 'application/json' }
+	headers = { 'X-API-Key': apiKey, 'Content-Type': 'application/json' }
 
-	return connection, headers, savePath
+	return connection, headers, savePath, apiUrl
 
 #Common function to repeatedly check the status of an API request
 def getStatus(connection, headers, url, spaces):
