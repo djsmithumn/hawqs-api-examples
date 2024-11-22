@@ -3,13 +3,15 @@
 # Poll results of project creation every 10 seconds until progress is 100%
 # Save project files to a directory - no scenario has been added or run yet, so these are watershed files such as subbasins, HRUs, and point source samples.
 #
-# r create_project.R
+# RScript create_project.R
 #
 
 library(httr2)
 library(jsonlite)
 
 source("api_helpers.R")
+
+options(timeout=NA)
 
 #Get app settings
 
